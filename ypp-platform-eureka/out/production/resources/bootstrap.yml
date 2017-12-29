@@ -1,0 +1,80 @@
+spring:
+  application:
+    name: eryu-platform-eureka
+server:
+  port: 8761
+
+eureka:
+#  client:
+#    fetch-registry: false
+#    register-with-eureka: false
+#    healthcheck: true
+
+  instance:
+    hostname: localhost
+
+  server:
+    enable-self-preservation: true
+
+---
+
+# 测试环境
+spring:
+  profiles: test
+
+eureka:
+  client:
+    service-url:
+      fetch-registry: false
+      register-with-eureka: false
+
+  instance:
+    hostname: localhost
+
+---
+
+# 灰度环境
+spring:
+  profiles: uat
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+
+  instance:
+    hostname: localhost
+
+---
+
+# 生产环境1
+spring:
+  profiles: prod1
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-2.yppfm.cn:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+  instance:
+    hostname: eureka-1.yppfm.cn
+    instance-id: eureka-1.yppfm.cn:${server.port}
+
+---
+
+# 生产环境2
+spring:
+  profiles: prod2
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-1.yppfm.cn:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+  instance:
+    hostname: eureka-2.yppfm.cn
+    instance-id: eureka-2.yppfm.cn:${server.port}
